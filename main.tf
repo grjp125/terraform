@@ -1,29 +1,3 @@
-data "azuread_client_config" "current" {
-}
-
-data "azuread_group" "aad_group" {
-  display_name = "avd-test"
-  security_enabled = true
-}
-
-resource "azurerm_role_assignment" "vm_user_role" {
-  scope              = azurerm_resource_group.rg-avd.id
-  role_definition_name =  "Virtual Machine User Login"
-  principal_id       = data.azuread_group.aad_group.object_id
-}
-
-resource "azurerm_role_assignment" "vm_admin_role" {
-  scope              = azurerm_resource_group.rg-avd.id
-  role_definition_name =  "Virtual Machine Administrator Login"
-  principal_id       = data.azuread_group.aad_group.object_id
-}
-
-resource "azurerm_role_assignment" "vm_desktop_role" {
-  scope              = azurerm_virtual_desktop_application_group.desktopapp.id
-  role_definition_name =  "Desktop Virtualization User"
-  principal_id       = data.azuread_group.aad_group.object_id
-}
-
 resource "azurerm_resource_group" "rg-avd" {
   name     = "AVD-RG"
   location = "East US"
